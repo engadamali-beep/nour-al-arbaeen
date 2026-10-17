@@ -1,0 +1,16 @@
+{
+  "name": "نُورُ الأربعين النووية",
+  "short_name": "نور الأربعين",
+  "description": "جامع الأحاديث النووية الـ42 مع الشرح المبسط — يعمل بدون إنترنت",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#f7f3ea",
+  "theme_color": "#0d5c46",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

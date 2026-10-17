@@ -1,0 +1,19 @@
+{
+  "name": "nour-al-arbaeen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "نور الأربعين النووية - PWA + Capacitor Android offline",
+  "scripts": {
+    "android:init": "npm i @capacitor/core @capacitor/cli @capacitor/android && npx cap init \"نور الأربعين\" com.nour.arbaeen --web-dir=\".\"",
+    "android:add": "npx cap add android",
+    "android:sync": "npx cap sync android",
+    "android:open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  }
+}

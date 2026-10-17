@@ -1,0 +1,6 @@
+{
+  "appId": "com.nour.arbaeen",
+  "appName": "نور الأربعين",
+  "webDir": ".",
+  "server": { "androidScheme": "https" }
+}
