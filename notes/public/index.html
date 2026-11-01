@@ -1,288 +1,465 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ملاحظاتي | تطبيق ملاحظاتك الشخصية</title>
-<meta name="description" content="ملاحظاتي — مساحة شخصية لملاحظاتك. بياناتك محلية وخاصة بك.">
-<meta name="theme-color" content="#0d6b52">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%9D%3C/text%3E%3C/svg%3E">
+<title>ملاحظاتي — مساحتك الخاصة للأفكار</title>
+<meta name="description" content="ملاحظاتي: تطبيق ملاحظات عربي أنيق، يعمل دون إنترنت، بقاعدة بيانات محلية مشفّرة ومساحة مستقلة لكل مستخدم.">
+<meta name="theme-color" content="#0b5d4b">
+<meta name="color-scheme" content="light dark">
+<script>
+  (function () {
+    try {
+      var choice = localStorage.getItem('malhazati.theme.v1') || 'system';
+      var dark = choice === 'dark' || (choice === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', dark ? '#0d1311' : '#0b5d4b');
+    } catch (error) { /* تجاهل */ }
+  })();
+</script>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ملاحظاتي">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#f3f6f4; --card:#ffffff; --ink:#18211c; --muted:#68776f;
-  --line:#e2e8e3; --brand:#0d6b52; --brand-2:#094c39; --brand-soft:#e0f2e9;
-  --gold:#c9a227; --danger:#cf4444;
-  --shadow:0 14px 34px rgba(18,45,36,.12);
-  --radius:20px;
-}
-[data-theme="dark"]{
-  --bg:#0f1311; --card:#171d1a; --ink:#edf2ee; --muted:#98a69d;
-  --line:#2a332e; --brand:#37a97f; --brand-2:#2a8a66; --brand-soft:#1e3229;
-  --shadow:0 14px 34px rgba(0,0,0,.5);
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;font-family:"Tajawal","Segoe UI",Tahoma,"Noto Kufi Arabic","Cairo",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-font-smoothing:antialiased;}
-[hidden]{display:none !important;}
-h1,h2,h3,h4,p{margin:0;}
-button{font-family:inherit;}
-input,textarea{font-family:inherit;}
-::placeholder{color:var(--muted);}
-.spacer{flex:1}
-
-/* ---------- أزرار ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 18px;border-radius:12px;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s ease;box-shadow:0 4px 14px rgba(18,45,36,.06);}
-.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
-.btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-.btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));border:0;color:#fff;box-shadow:0 8px 20px rgba(13,107,82,.30);}
-.btn-primary:hover{filter:brightness(1.07);}
-.btn-danger{background:#fdecec;color:#c0392b;border-color:#f3d2d2;}
-.btn-block{width:100%;}
-.btn.small{padding:7px 12px;font-size:.85rem;border-radius:10px;}
-.icon-btn{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:grid;place-items:center;font-size:1rem;transition:all .2s ease;}
-.icon-btn:hover{background:var(--brand-soft);border-color:var(--brand);color:var(--brand);}
-
-/* ---------- شاشة التسجيل / الدخول ---------- */
-.auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(900px 520px at 8% -10%,#dcefe5 0%,transparent 60%),radial-gradient(820px 520px at 108% 112%,#f2e8cd 0%,transparent 55%),var(--bg);}
-.auth-card{width:min(430px,100%);background:var(--card);border:1px solid var(--line);border-radius:26px;padding:34px 30px 28px;box-shadow:var(--shadow);}
-.auth-logo{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;display:grid;place-items:center;font-size:30px;font-weight:800;margin:0 auto 14px;box-shadow:0 10px 24px rgba(13,107,82,.35);}
-.auth-title{text-align:center;font-size:1.7rem;font-weight:800;margin:0 0 6px;}
-.auth-sub{text-align:center;color:var(--muted);font-size:.92rem;margin:0 0 20px;}
-.auth-tabs{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:18px;}
-.auth-tab{flex:1;border:0;background:transparent;color:var(--muted);padding:9px;border-radius:9px;cursor:pointer;font-weight:700;font-size:.92rem;transition:all .2s ease;}
-.auth-tab.active{background:var(--brand);color:#fff;box-shadow:0 4px 12px rgba(13,107,82,.3);}
-.auth-form{display:flex;flex-direction:column;gap:14px;}
-.field{display:flex;flex-direction:column;gap:6px;}
-.field label{font-size:.88rem;font-weight:700;}
-.field input[type="text"],.field input[type="email"],.field input[type="password"]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1rem;outline:0;transition:border-color .2s ease, box-shadow .2s ease;}
-.field input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft);}
-.input-affix{position:relative;}
-.input-affix input{padding-inline-end:46px;}
-.input-affix .affix-btn{position:absolute;inset-inline-end:6px;top:50%;transform:translateY(-50%);border:0;background:transparent;cursor:pointer;font-size:1.05rem;color:var(--muted);width:34px;height:34px;border-radius:8px;}
-.auth-error{background:#fdecec;border:1px solid #f3d2d2;color:#c0392b;border-radius:12px;padding:10px 14px;font-size:.9rem;text-align:center;}
-.auth-note{margin:2px 0 0;text-align:center;color:var(--muted);font-size:.8rem;}
-.btn-block{width:100%;padding:12px;}
-
-/* ---------- شاشة التطبيق ---------- */
-.app-screen{min-height:100vh;}
-.app-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
-.ah-inner{max-width:1120px;margin:auto;display:flex;align-items:center;gap:12px;padding:12px 16px;flex-wrap:wrap;}
-.ah-brand{display:flex;align-items:center;gap:10px;margin-inline-end:6px;}
-.ah-logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;box-shadow:0 6px 14px rgba(13,107,82,.30);}
-.ah-name{font-weight:800;font-size:1.2rem;}
-.ah-search{flex:1;min-width:180px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;}
-.ah-search input{flex:1;border:0;background:transparent;outline:0;color:var(--ink);font-size:1rem;}
-.ah-user{position:relative;}
-.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;border:0;font-weight:700;font-size:16px;cursor:pointer;display:grid;place-items:center;transition:transform .2s ease;}
-.avatar:hover{transform:scale(1.05);}
-.avatar-lg{width:46px;height:46px;font-size:20px;border-radius:14px;border-radius:50%;}
-.user-menu{position:absolute;top:calc(100% + 10px);inset-inline-end:0;width:250px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:12px;z-index:60;}
-.user-menu-head{display:flex;gap:10px;align-items:center;padding:6px 6px 12px;border-bottom:1px solid var(--line);margin-bottom:8px;}
-.user-name{font-weight:700;}
-.user-email{color:var(--muted);font-size:.82rem;word-break:break-all;}
-.user-menu-item{width:100%;display:flex;align-items:center;gap:8px;border:0;background:transparent;color:var(--ink);padding:9px 10px;border-radius:10px;cursor:pointer;font-size:.92rem;font-weight:600;text-align:start;}
-.user-menu-item:hover{background:var(--brand-soft);color:var(--brand);}
-
-.app-main{max-width:1120px;margin:0 auto;padding:18px 16px 60px;}
-.page-title{font-size:1.35rem;font-weight:800;margin:0;}
-.app-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 16px;flex-wrap:wrap;}
-.chips{display:flex;gap:8px;flex-wrap:wrap;}
-.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer;font-size:.9rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(18,45,36,.05);}
-.chip.active{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 6px 14px rgba(13,107,82,.28);}
-.chip-count{background:rgba(127,127,127,.18);border-radius:999px;padding:1px 8px;font-size:.8rem;font-weight:800;}
-.chip.active .chip-count{background:rgba(255,255,255,.25);}
-.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;padding-bottom:10px;}
-.ncard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 6px 18px rgba(18,45,36,.06);display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:all .2s ease;min-height:150px;}
-.ncard:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
-.ncard[data-color="amber"]{background:#fff7e6;border-color:#f0e0b0;}
-.ncard[data-color="sky"]{background:#e8f3fb;border-color:#c4e0f0;}
-.ncard[data-color="rose"]{background:#fdecef;border-color:#f5d3d9;}
-.ncard[data-color="violet"]{background:#f2edfb;border-color:#e3d7f6;}
-.ncard[data-color="mint"]{background:#e9f8f1;border-color:#c8ecd9;}
-[data-theme="dark"] .ncard[data-color="amber"]{background:#2b2413;border-color:#4a3f22;}
-[data-theme="dark"] .ncard[data-color="sky"]{background:#14222c;border-color:#234055;}
-[data-theme="dark"] .ncard[data-color="rose"]{background:#2c161b;border-color:#4c2530;}
-[data-theme="dark"] .ncard[data-color="violet"]{background:#221b33;border-color:#3d2f5c;}
-[data-theme="dark"] .ncard[data-color="mint"]{background:#12281f;border-color:#1f4536;}
-.ncard-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.ncard-dot{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.10);}
-.ncard-pin{color:var(--gold);font-weight:700;font-size:.85rem;display:inline-flex;gap:4px;align-items:center;}
-.ncard-title{margin:0;font-size:1.05rem;font-weight:700;line-height:1.5;color:inherit;}
-.ncard[data-color="amber"] .ncard-title{color:#8a5a00;}
-.ncard[data-color="sky"] .ncard-title{color:#0b5b8c;}
-.ncard[data-color="rose"] .ncard-title{color:#a32438;}
-.ncard[data-color="violet"] .ncard-title{color:#5b3fb8;}
-.ncard[data-color="mint"] .ncard-title{color:#0d7a52;}
-.ncard-content{margin:0;color:var(--muted);font-size:.9rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line;}
-.ncard-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:8px;border-top:1px dashed var(--line);}
-.ncard-date{color:var(--muted);font-size:.78rem;}
-.ncard-actions{display:flex;gap:6px;}
-.ncard-btn{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font-size:.9rem;display:grid;place-items:center;transition:all .15s ease;padding:0;}
-.ncard-btn:hover{background:var(--brand-soft);border-color:var(--brand);color:var(--brand);}
-.ncard-btn.danger{color:var(--danger);}
-.ncard-btn.danger:hover{background:#fdecec;border-color:var(--danger);}
-
-.empty{text-align:center;padding:60px 20px;background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);color:var(--muted);}
-.empty-icon{font-size:2.6rem;margin-bottom:10px;}
-.empty h3{color:var(--ink);margin-bottom:6px;}
-
-/* ---------- المحرر ---------- */
-.modal-backdrop{position:fixed;inset:0;background:rgba(8,20,15,.55);backdrop-filter:blur(4px);z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:22px;overflow:auto;}
-.modal-backdrop.open{background:rgba(8,20,15,.45);}
-.modal{background:var(--card);border:1px solid var(--line);border-radius:22px;width:min(680px,100%);padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.35);transform:translateY(14px);opacity:0;transition:all .25s ease;}
-.modal-backdrop.open .modal{transform:none;opacity:1;}
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
-.modal-title{margin:0;font-size:1.15rem;font-weight:800;}
-.editor-title{width:100%;border:0;background:transparent;outline:0;color:var(--ink);font-size:1.6rem;font-weight:700;padding:6px 0;border-bottom:2px solid var(--line);transition:border-color .2s ease;}
-.editor-title:focus{border-bottom-color:var(--brand);}
-.editor-content{width:100%;min-height:190px;border:0;background:transparent;outline:0;resize:vertical;color:var(--ink);font-size:1.05rem;line-height:2;padding:10px 0;}
-.editor-content::placeholder{color:var(--muted);}
-.editor-flags{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;}
-.check{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;font-weight:600;cursor:pointer;}
-.editor-meta{display:flex;gap:12px;align-items:center;color:var(--muted);font-size:.84rem;margin:8px 0;}
-.swatches{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;}
-.swatch{width:34px;height:34px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;transition:transform .15s ease;}
-.swatch:hover{transform:scale(1.08);}
-.swatch[data-color="amber"]{background:#fff7e6;border-color:#f0e0b0;}
-.swatch[data-color="sky"]{background:#e8f3fb;border-color:#c4e0f0;}
-.swatch[data-color="rose"]{background:#fdecef;border-color:#f5d3d9;}
-.swatch[data-color="violet"]{background:#f2edfb;border-color:#e3d7f6;}
-.swatch[data-color="mint"]{background:#e9f8f1;border-color:#c8ecd9;}
-.swatch[data-color="default"]{background:var(--card);border:2px solid var(--line);}
-.swatch.active{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft);}
-.modal-actions{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap;}
-.modal-actions .spacer{flex:1;}
-
-/* ---------- الإشعارات ---------- */
-.toast{position:fixed;bottom:26px;inset-inline-start:50%;transform:translateX(-50%) translateY(24px);background:#16211b;color:#fff;padding:12px 22px;border-radius:999px;opacity:0;transition:all .3s ease;z-index:130;box-shadow:0 14px 34px rgba(0,0,0,.35);font-weight:600;font-size:.92rem;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* ---------- عام ---------- */
-@media (max-width:640px){
-  .ah-inner{gap:10px;}
-  .ah-name{font-size:1.05rem;}
-  .page-title{font-size:1.15rem;}
-  .modal-backdrop{padding:12px;}
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
-<!-- شاشة تسجيل الدخول / إنشاء الحساب -->
-<section class="auth-screen" id="authScreen" hidden>
-  <div class="auth-card">
-    <div class="auth-logo">م</div>
-    <h1 class="auth-title">ملاحظاتي</h1>
-    <p class="auth-sub">مساحة آمنة لكل ما تُفكر به — بياناتك محلية وخاصة بك.</p>
-    <div class="auth-tabs">
-      <button type="button" class="auth-tab active" data-mode="login">تسجيل الدخول</button>
-      <button type="button" class="auth-tab" data-mode="register">إنشاء حساب</button>
-    </div>
-    <form class="auth-form" id="authForm" novalidate>
-      <div class="field" id="nameField">
-        <label for="authName">الاسم (اختياري)</label>
-        <input type="text" id="authName" placeholder="الاسم الكامل أو اللقب" autocomplete="name">
-      </div>
-      <div class="field">
-        <label for="authEmail">البريد الإلكتروني</label>
-        <input type="email" id="authEmail" placeholder="you@example.com" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="authPassword">كلمة المرور</label>
-        <div class="input-affix">
-          <input type="password" id="authPassword" placeholder="••••••••" autocomplete="new-password" required>
-          <button type="button" class="affix-btn" id="authEye" aria-label="إظهار كلمة المرور">👁</button>
-        </div>
-      </div>
-      <div class="auth-error" id="authError" hidden></div>
-      <button type="submit" class="btn btn-primary btn-block" id="authSubmit">تسجيل الدخول</button>
-      <p class="auth-note">بياناتك تُحفظ في قاعدة بيانات محلية على الخادم وتُستخدم فقط لحسابك.</p>
-    </form>
-  </div>
-</section>
+<!-- ===== مكتبة الأيقونات ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-logo" viewBox="0 0 32 32">
+    <path d="M9 5.8h9.7L23 10.1v16.1H9z" fill="currentColor"/>
+    <path d="M18.7 5.8v4.3H23" fill="none" stroke="#0b5d4b" stroke-width="1.7" stroke-linejoin="round"/>
+    <path d="M12.6 14h7M12.6 17.4h7M12.6 20.8h4.4" fill="none" stroke="#0b5d4b" stroke-width="1.7" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.42"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.14.61.68 1.05 1.31 1.05H21a2 2 0 0 1 0 4h-.09c-.63 0-1.17.44-1.31 1.05z"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><path d="M7 7h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-restore" viewBox="0 0 24 24"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></symbol>
+</svg>
 
-<!-- شاشة التطبيق -->
-<section class="app-screen" id="appScreen" hidden>
-  <header class="app-header">
-    <div class="ah-inner">
-      <div class="ah-brand">
-        <span class="ah-logo">م</span>
-        <span class="ah-name">ملاحظاتي</span>
+<!-- ===== شاشة الإقلاع ===== -->
+<div class="boot" id="bootScreen">
+  <div class="boot-mark"><svg class="ico" aria-hidden="true"><use href="#i-logo"/></svg></div>
+  <p class="boot-text">جارٍ تجهيز مساحتك…</p>
+  <div class="boot-bar" aria-hidden="true"><span></span></div>
+</div>
+
+<!-- ===== الدخول / إنشاء حساب ===== -->
+<div class="auth" id="authView" hidden>
+  <div class="auth-shell">
+    <aside class="auth-brand">
+      <div class="auth-brand-top">
+        <div class="brand-lockup">
+          <span class="logo-mark lg"><svg class="ico" aria-hidden="true"><use href="#i-logo"/></svg></span>
+          <span class="brand-word">ملاحظاتي</span>
+        </div>
+        <span class="brand-pill">مساحة شخصية</span>
       </div>
-      <div class="ah-search">
-        <span>🔍</span>
-        <input id="searchInput" type="search" placeholder="ابحث في ملاحظاتك...">
+
+      <div class="auth-brand-copy">
+        <h2>كل أفكارك…<br>في مكانٍ واحد هادئ.</h2>
+        <p>دوّن، نظّم، وابحث في ملاحظاتك بواجهة عربية أنيقة. بياناتك مشفّرة وتبقى على جهازك، بعيدًا عن أي خادم.</p>
       </div>
-      <button class="icon-btn" id="themeToggle" title="تبديل الوضع">🌙</button>
-      <div class="ah-user">
-        <button class="avatar" id="userAvatar" title="الملف الشخصي">أ</button>
-        <div class="user-menu" id="userMenu" hidden>
-          <div class="user-menu-head">
-            <div class="avatar avatar-lg" id="userAvatarLg">أ</div>
-            <div>
-              <div class="user-name" id="userName"></div>
-              <div class="user-email" id="userEmail"></div>
+
+      <div class="faux-notes" aria-hidden="true">
+        <div class="faux-note one"><span class="faux-dot"></span><span class="faux-lines"><i></i><i></i><i></i></span></div>
+        <div class="faux-note two"><span class="faux-dot gold"></span><span class="faux-lines"><i></i><i></i></span></div>
+        <div class="faux-pin"><svg class="ico"><use href="#i-pin"/></svg></div>
+      </div>
+
+      <ul class="auth-features">
+        <li><span class="feature-ico"><svg class="ico"><use href="#i-shield"/></svg></span><div><strong>خصوصية مطلقة</strong><small>قاعدة بيانات محلية وتشفير AES-256</small></div></li>
+        <li><span class="feature-ico"><svg class="ico"><use href="#i-search"/></svg></span><div><strong>بحث فوري</strong><small>اعثر على أي فكرة في لمح البصر</small></div></li>
+        <li><span class="feature-ico"><svg class="ico"><use href="#i-note"/></svg></span><div><strong>يعمل دون إنترنت</strong><small>ثبّته كتطبيق واكتب في أي وقت</small></div></li>
+      </ul>
+
+      <p class="auth-brand-foot"><svg class="ico"><use href="#i-lock"/></svg> لا تُرسل بياناتك إلى أي خادم خارجي</p>
+    </aside>
+
+    <main class="auth-panel">
+      <div class="auth-mobile-brand">
+        <span class="logo-mark"><svg class="ico" aria-hidden="true"><use href="#i-logo"/></svg></span>
+        <span class="brand-word">ملاحظاتي</span>
+      </div>
+
+      <div class="auth-form-wrap">
+        <div class="auth-heading">
+          <h1 id="authTitle">مرحبًا بعودتك</h1>
+          <p id="authSubtitle">سجّل الدخول للوصول إلى مساحتك الخاصة.</p>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="طريقة الوصول">
+          <button type="button" class="auth-tab active" data-mode="login" role="tab" aria-selected="true">تسجيل الدخول</button>
+          <button type="button" class="auth-tab" data-mode="register" role="tab" aria-selected="false">إنشاء حساب</button>
+        </div>
+
+        <form id="authForm" class="auth-form" novalidate>
+          <div class="field" id="nameField" hidden>
+            <label for="authName">الاسم</label>
+            <div class="input-wrap">
+              <svg class="ico input-ico"><use href="#i-user"/></svg>
+              <input id="authName" type="text" placeholder="اسمك الكامل" autocomplete="name" maxlength="60">
             </div>
           </div>
-          <button class="user-menu-item" id="logoutBtn">🚪 تسجيل الخروج</button>
+
+          <div class="field">
+            <label for="authEmail">البريد الإلكتروني</label>
+            <div class="input-wrap">
+              <svg class="ico input-ico"><use href="#i-note"/></svg>
+              <input id="authEmail" type="email" placeholder="name@example.com" autocomplete="email" dir="ltr" inputmode="email" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="authPassword">كلمة المرور</label>
+            <div class="input-wrap">
+              <svg class="ico input-ico"><use href="#i-lock"/></svg>
+              <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" required>
+              <button type="button" class="input-action" id="authEye" aria-label="إظهار كلمة المرور">
+                <svg class="ico"><use href="#i-eye"/></svg>
+              </button>
+            </div>
+            <div class="strength" id="strengthMeter" hidden>
+              <span class="strength-track"><i id="strengthBar"></i></span>
+              <small id="strengthText">قوة كلمة المرور</small>
+            </div>
+          </div>
+
+          <div class="field" id="confirmField" hidden>
+            <label for="authConfirm">تأكيد كلمة المرور</label>
+            <div class="input-wrap">
+              <svg class="ico input-ico"><use href="#i-lock"/></svg>
+              <input id="authConfirm" type="password" placeholder="أعد كتابة كلمة المرور" autocomplete="new-password">
+            </div>
+          </div>
+
+          <div class="auth-hint" id="registerHint" hidden>
+            <svg class="ico"><use href="#i-info"/></svg>
+            <span>لا توجد استعادة لكلمة المرور لأن البيانات مشفّرة محليًا. احفظها في مكان آمن.</span>
+          </div>
+
+          <div class="alert" id="authError" role="alert" hidden>
+            <svg class="ico"><use href="#i-alert"/></svg>
+            <span id="authErrorText"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="authSubmit">
+            <span class="btn-label">تسجيل الدخول</span>
+            <span class="spinner" hidden></span>
+          </button>
+        </form>
+
+        <div class="local-card">
+          <span class="local-ico"><svg class="ico"><use href="#i-shield"/></svg></span>
+          <div>
+            <strong>حساب محلي على هذا المتصفح</strong>
+            <p>لكل بريد مساحته المستقلة. تُشفَّر الملاحظات بمفتاح مشتق من كلمة مرورك، ولا تُرفع إلى الإنترنت.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </header>
-  <main class="app-main">
-    <div class="chips" id="chips">
-      <button class="chip active" data-filter="all">📝 كل الملاحظات <span class="chip-count" id="countAll">0</span></button>
-      <button class="chip" data-filter="pinned">📌 المثبتة <span class="chip-count" id="countPinned">0</span></button>
-      <button class="chip" data-filter="archived">🗃 المؤرشفة <span class="chip-count" id="countArchived">0</span></button>
-    </div>
-    <div class="app-actions">
-      <h2 class="page-title" id="pageTitle">ملاحظاتي</h2>
-      <button class="btn btn-primary" id="newNoteBtn">＋ أضف ملاحظة جديدة</button>
-    </div>
-    <div id="notesGrid" class="notes-grid"></div>
-    <div class="empty" id="emptyState" hidden>
-      <div class="empty-icon">📝</div>
-      <h3 id="emptyTitle">لا توجد ملاحظات بعد</h3>
-      <p id="emptyText">ابدأ بإنشاء ملاحظتك الأولى وستظهر هنا.</p>
-      <button class="btn btn-primary" id="emptyBtn">أنشئ ملاحظتك الأولى</button>
-    </div>
-  </main>
-</section>
 
-<!-- محرر الملاحظة -->
-<div class="modal-backdrop" id="editorBackdrop" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editorModalTitle">
-    <div class="modal-head">
-      <h3 class="modal-title" id="editorModalTitle">ملاحظة جديدة</h3>
-      <button class="icon-btn" id="editorClose" aria-label="إغلاق">✕</button>
-    </div>
-    <input class="editor-title" id="editorTitle" placeholder="عنوان الملاحظة (اختياري)" maxlength="120" autocomplete="off">
-    <textarea class="editor-content" id="editorContent" placeholder="اكتب محتوى ملاحظتك هنا..."></textarea>
-    <div class="editor-flags">
-      <label class="check"><input type="checkbox" id="editorPinned"> 📌 مثبتة</label>
-      <label class="check"><input type="checkbox" id="editorArchived"> 🗃 مؤرشفة</label>
-    </div>
-    <div class="editor-meta">
-      <span id="editorCount">0 حرف</span>
-      <span id="editorWords">0 كلمة</span>
-      <span id="editorDate"></span>
-    </div>
-    <input type="hidden" id="editorColor" value="default">
-    <div class="swatches" id="swatches"></div>
-    <div class="modal-actions">
-      <button class="btn" id="editorArchive">📦 مؤرشف</button>
-      <span class="spacer"></span>
-      <button class="btn btn-danger" id="editorDelete" hidden>🗑 حذف</button>
-      <button class="btn btn-primary" id="editorSave">✅ حفظ</button>
-    </div>
+      <p class="auth-copy">ملاحظاتي <span>·</span> الإصدار ٢٠٢٦ <span>·</span> صُنع بعناية للعربية</p>
+    </main>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- ===== التطبيق ===== -->
+<div class="app" id="appView" hidden>
+  <div class="scrim" id="scrim" hidden></div>
 
-<script src="./app.js"></script>
+  <aside class="sidebar" id="sidebar" aria-label="التنقل الرئيسي">
+    <div class="side-brand">
+      <span class="logo-mark"><svg class="ico" aria-hidden="true"><use href="#i-logo"/></svg></span>
+      <div class="side-brand-text"><strong>ملاحظاتي</strong><span>My Notes</span></div>
+      <button class="icon-btn side-close" id="sideClose" aria-label="إغلاق القائمة"><svg class="ico"><use href="#i-x"/></svg></button>
+    </div>
+
+    <button class="btn btn-primary btn-block new-note-btn" id="newNoteBtn">
+      <svg class="ico"><use href="#i-plus"/></svg>
+      <span>ملاحظة جديدة</span>
+      <kbd class="kbd">N</kbd>
+    </button>
+
+    <nav class="side-nav">
+      <p class="nav-label">المساحة</p>
+      <button class="nav-item active" data-filter="all">
+        <svg class="ico"><use href="#i-note"/></svg><span>كل الملاحظات</span><span class="nav-count" id="countAll">٠</span>
+      </button>
+      <button class="nav-item" data-filter="pinned">
+        <svg class="ico"><use href="#i-pin"/></svg><span>المثبتة</span><span class="nav-count" id="countPinned">٠</span>
+      </button>
+      <button class="nav-item" data-filter="archived">
+        <svg class="ico"><use href="#i-archive"/></svg><span>المؤرشفة</span><span class="nav-count" id="countArchived">٠</span>
+      </button>
+      <button class="nav-item" data-filter="trash">
+        <svg class="ico"><use href="#i-trash"/></svg><span>سلة المهملات</span><span class="nav-count" id="countTrash">٠</span>
+      </button>
+
+      <div class="nav-sep"></div>
+      <p class="nav-label">الوسوم <button class="nav-label-action" id="manageTagsBtn" title="كل الوسوم">عرض الكل</button></p>
+      <div class="tag-list" id="tagList"></div>
+    </nav>
+
+    <div class="side-foot">
+      <button class="side-user" id="userCard" title="إعدادات الحساب">
+        <span class="avatar" id="sideAvatar">م</span>
+        <span class="side-user-text"><strong id="sideName">مستخدم</strong><small id="sideEmail" dir="ltr">—</small></span>
+        <svg class="ico side-user-cog"><use href="#i-settings"/></svg>
+      </button>
+      <div class="side-badges">
+        <span class="secure-badge"><svg class="ico"><use href="#i-shield"/></svg> مشفّر محليًا</span>
+        <button class="icon-btn sm" id="lockBtn" title="قفل التطبيق" aria-label="قفل التطبيق"><svg class="ico"><use href="#i-lock"/></svg></button>
+        <button class="icon-btn sm" id="sideThemeBtn" title="تبديل المظهر" aria-label="تبديل المظهر"><svg class="ico"><use href="#i-moon"/></svg></button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="فتح القائمة"><svg class="ico"><use href="#i-menu"/></svg></button>
+      <div class="crumbs"><span>ملاحظاتي</span><svg class="ico"><use href="#i-chevron"/></svg><strong id="crumb">كل الملاحظات</strong></div>
+
+      <div class="topbar-tools">
+        <div class="search-box" id="searchBox">
+          <svg class="ico search-ico"><use href="#i-search"/></svg>
+          <input id="searchInput" type="search" placeholder="ابحث في ملاحظاتك…" aria-label="بحث في الملاحظات" autocomplete="off">
+          <kbd class="kbd search-kbd">⌘ K</kbd>
+          <button class="search-clear" id="searchClear" aria-label="مسح البحث" hidden><svg class="ico"><use href="#i-x"/></svg></button>
+        </div>
+        <button class="icon-btn" id="themeToggle" title="تبديل المظهر" aria-label="تبديل المظهر"><svg class="ico"><use href="#i-moon"/></svg></button>
+        <button class="icon-btn" id="settingsBtn" title="الإعدادات" aria-label="الإعدادات"><svg class="ico"><use href="#i-settings"/></svg></button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div class="page-heading">
+          <h1 id="pageTitle">كل الملاحظات</h1>
+          <p id="pageSubtitle">مساحتك الخاصة للأفكار والملاحظات.</p>
+        </div>
+        <div class="page-actions">
+          <div class="select-wrap">
+            <svg class="ico"><use href="#i-list"/></svg>
+            <select id="sortSelect" aria-label="ترتيب الملاحظات">
+              <option value="updated">آخر تعديل</option>
+              <option value="created">تاريخ الإنشاء</option>
+              <option value="title">العنوان (أ – ي)</option>
+            </select>
+            <svg class="ico chev"><use href="#i-chevron"/></svg>
+          </div>
+          <div class="view-toggle" role="group" aria-label="طريقة العرض">
+            <button class="view-btn active" data-view="grid" aria-label="عرض شبكي" aria-pressed="true"><svg class="ico"><use href="#i-grid"/></svg></button>
+            <button class="view-btn" data-view="list" aria-label="عرض قائمة" aria-pressed="false"><svg class="ico"><use href="#i-list"/></svg></button>
+          </div>
+          <button class="btn btn-primary hide-sm" id="newNoteBtn2"><svg class="ico"><use href="#i-plus"/></svg> ملاحظة جديدة</button>
+        </div>
+      </div>
+
+      <section class="stats-strip" aria-label="إحصاءات سريعة">
+        <div class="stat"><span class="stat-ico mint"><svg class="ico"><use href="#i-note"/></svg></span><div><strong id="statActive">٠</strong><small>ملاحظة نشطة</small></div></div>
+        <div class="stat"><span class="stat-ico gold"><svg class="ico"><use href="#i-pin"/></svg></span><div><strong id="statPinned">٠</strong><small>مثبتة</small></div></div>
+        <div class="stat"><span class="stat-ico sky"><svg class="ico"><use href="#i-tag"/></svg></span><div><strong id="statTags">٠</strong><small>وسمًا</small></div></div>
+        <div class="stat"><span class="stat-ico violet"><svg class="ico"><use href="#i-edit"/></svg></span><div><strong id="statWords">٠</strong><small>كلمة مكتوبة</small></div></div>
+      </section>
+
+      <div class="filter-row">
+        <div class="filter-info" id="filterInfo" hidden>
+          <span class="filter-chip" id="filterChip"></span>
+          <span class="result-count" id="resultCount"></span>
+        </div>
+        <div class="sort-hint" id="sortHint">مرتبة حسب آخر تعديل</div>
+      </div>
+
+      <section id="notesArea" aria-live="polite">
+        <div class="notes-grid" id="notesGrid"></div>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <div class="empty-art" aria-hidden="true">
+            <span class="empty-sheet back"></span>
+            <span class="empty-sheet front"><i></i><i></i><i></i></span>
+            <span class="empty-spark"><svg class="ico"><use href="#i-sparkle"/></svg></span>
+          </div>
+          <h2 id="emptyTitle">ابدأ بفكرتك الأولى</h2>
+          <p id="emptyText">لا توجد ملاحظات هنا بعد. أنشئ ملاحظة وستظهر في هذه المساحة.</p>
+          <button class="btn btn-primary" id="emptyBtn"><svg class="ico"><use href="#i-plus"/></svg> <span id="emptyBtnText">إنشاء ملاحظة</span></button>
+        </div>
+      </section>
+
+      <footer class="app-foot">
+        <span><svg class="ico"><use href="#i-lock"/></svg> بياناتك مشفّرة ومحفوظة على هذا الجهاز فقط</span>
+        <span class="dot">·</span>
+        <span>ملاحظاتي ٢٠٢٦</span>
+      </footer>
+    </main>
+  </div>
+
+  <button class="fab" id="fabNew" aria-label="ملاحظة جديدة"><svg class="ico"><use href="#i-plus"/></svg></button>
+</div>
+
+<!-- ===== محرر الملاحظة ===== -->
+<div class="modal-backdrop editor-backdrop" id="editorBackdrop" hidden>
+  <section class="editor" role="dialog" aria-modal="true" aria-labelledby="editorHeading">
+    <header class="editor-head">
+      <div class="editor-head-right">
+        <span class="editor-status" id="saveState"><span class="status-dot"></span><span id="saveStateText">محفوظ</span></span>
+        <span class="editor-heading" id="editorHeading">ملاحظة جديدة</span>
+      </div>
+      <div class="editor-head-actions">
+        <button class="icon-btn" id="edPin" title="تثبيت" aria-label="تثبيت الملاحظة" aria-pressed="false"><svg class="ico"><use href="#i-pin"/></svg></button>
+        <button class="icon-btn" id="edArchive" title="أرشفة" aria-label="أرشفة الملاحظة" aria-pressed="false"><svg class="ico"><use href="#i-archive"/></svg></button>
+        <span class="head-sep"></span>
+        <button class="icon-btn" id="edClose" title="إغلاق" aria-label="إغلاق المحرر"><svg class="ico"><use href="#i-x"/></svg></button>
+      </div>
+    </header>
+
+    <div class="editor-body">
+      <input class="editor-title" id="edTitle" type="text" placeholder="عنوان الملاحظة" maxlength="120" autocomplete="off">
+      <div class="editor-toolbar">
+        <div class="swatches" id="colorSwatches" role="group" aria-label="لون الملاحظة"></div>
+        <div class="editor-tags" id="editorTagsWrap">
+          <div class="tag-chips" id="edTags"></div>
+          <div class="tag-input-wrap">
+            <svg class="ico"><use href="#i-tag"/></svg>
+            <input id="tagInput" type="text" placeholder="أضف وسمًا ثم Enter" maxlength="24" autocomplete="off">
+          </div>
+        </div>
+      </div>
+      <textarea class="editor-content" id="edContent" placeholder="ابدأ الكتابة… أفكارك تستحق مساحة." spellcheck="true"></textarea>
+    </div>
+
+    <footer class="editor-foot">
+      <div class="editor-meta">
+        <span id="edWords">٠ كلمة</span><span class="dot">·</span><span id="edChars">٠ حرف</span><span class="dot">·</span><span id="edDate"></span>
+      </div>
+      <div class="editor-actions">
+        <button class="btn btn-ghost-danger" id="edDelete"><svg class="ico"><use href="#i-trash"/></svg> حذف</button>
+        <button class="btn btn-primary" id="edDone"><svg class="ico"><use href="#i-check"/></svg> تم</button>
+      </div>
+    </footer>
+  </section>
+</div>
+
+<!-- ===== الإعدادات ===== -->
+<div class="modal-backdrop settings-backdrop" id="settingsBackdrop" hidden>
+  <section class="modal settings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <header class="modal-head">
+      <div><h2 id="settingsTitle">الإعدادات</h2><p>حسابك، مظهرك، وبياناتك في مكان واحد.</p></div>
+      <button class="icon-btn" id="settingsClose" aria-label="إغلاق الإعدادات"><svg class="ico"><use href="#i-x"/></svg></button>
+    </header>
+
+    <div class="settings-body">
+      <section class="profile-card">
+        <span class="avatar xl" id="profileAvatar">م</span>
+        <div class="profile-info">
+          <strong id="profileName">مستخدم</strong>
+          <span id="profileEmail" dir="ltr">—</span>
+          <small id="profileSince">عضو منذ —</small>
+        </div>
+        <span class="profile-badge"><svg class="ico"><use href="#i-shield"/></svg> حساب محلي</span>
+      </section>
+
+      <div class="settings-stats">
+        <div><strong id="setNotesCount">٠</strong><span>ملاحظة</span></div>
+        <div><strong id="setWordsCount">٠</strong><span>كلمة</span></div>
+        <div><strong id="setTagsCount">٠</strong><span>وسم</span></div>
+      </div>
+
+      <section class="setting-group">
+        <div class="setting-title"><h3>المظهر</h3><p>اختر ما يريح عينيك.</p></div>
+        <div class="theme-options" role="group" aria-label="المظهر">
+          <button data-theme-choice="light"><svg class="ico"><use href="#i-sun"/></svg><span>فاتح</span></button>
+          <button data-theme-choice="dark"><svg class="ico"><use href="#i-moon"/></svg><span>داكن</span></button>
+          <button data-theme-choice="system"><svg class="ico"><use href="#i-grid"/></svg><span>النظام</span></button>
+        </div>
+      </section>
+
+      <section class="setting-group">
+        <div class="setting-title"><h3>النسخ الاحتياطي</h3><p>لأن البيانات محلية، احتفظ بنسخة قبل تغيير الجهاز أو المتصفح.</p></div>
+        <div class="setting-actions">
+          <button class="btn" id="exportBtn"><svg class="ico"><use href="#i-download"/></svg> تنزيل نسخة احتياطية</button>
+          <button class="btn" id="importBtn"><svg class="ico"><use href="#i-upload"/></svg> استيراد نسخة</button>
+          <input type="file" id="importFile" accept="application/json,.json" hidden>
+        </div>
+      </section>
+
+      <section class="setting-group">
+        <div class="setting-title"><h3>الأمان</h3><p>ملاحظاتك مشفّرة بمفتاح مشتق من كلمة مرورك، ولا يمكن قراءتها دون تسجيل الدخول.</p></div>
+        <div class="info-row"><svg class="ico"><use href="#i-lock"/></svg><span>تشفير AES-256-GCM · اشتقاق مفاتيح PBKDF2</span></div>
+        <div class="setting-actions">
+          <button class="btn" id="lockNowBtn"><svg class="ico"><use href="#i-lock"/></svg> قفل التطبيق الآن</button>
+        </div>
+      </section>
+
+      <section class="setting-group danger-zone">
+        <div class="setting-title"><h3>منطقة الخطر</h3><p>هذه الإجراءات لا يمكن التراجع عنها.</p></div>
+        <div class="danger-actions">
+          <button class="btn btn-ghost-danger" id="emptyTrashBtn"><svg class="ico"><use href="#i-trash"/></svg> تفريغ سلة المهملات</button>
+          <button class="btn btn-ghost-danger" id="deleteAllBtn"><svg class="ico"><use href="#i-trash"/></svg> حذف كل الملاحظات</button>
+          <button class="btn btn-danger" id="deleteAccountBtn">حذف الحساب نهائيًا</button>
+        </div>
+      </section>
+
+      <footer class="settings-foot">
+        <span>ملاحظاتي · الإصدار ٢٠٢٦</span>
+        <span>بياناتك تبقى معك.</span>
+      </footer>
+    </div>
+  </section>
+</div>
+
+<!-- ===== تأكيد ===== -->
+<div class="modal-backdrop" id="confirmBackdrop" hidden>
+  <section class="modal modal-sm confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmText">
+    <span class="confirm-icon" id="confirmIcon"><svg class="ico"><use href="#i-alert"/></svg></span>
+    <h2 id="confirmTitle">هل أنت متأكد؟</h2>
+    <p id="confirmText">لا يمكن التراجع عن هذا الإجراء.</p>
+    <div class="confirm-actions">
+      <button class="btn" id="confirmCancel">إلغاء</button>
+      <button class="btn btn-danger" id="confirmOk">تأكيد</button>
+    </div>
+  </section>
+</div>
+
+<div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+
+<noscript>
+  <div class="noscript">يحتاج «ملاحظاتي» إلى تفعيل JavaScript للعمل.</div>
+</noscript>
+
+<script type="module" src="./app.js"></script>
 </body>
 </html>

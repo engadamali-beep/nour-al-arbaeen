@@ -1,0 +1,41 @@
+{
+  "name": "ملاحظاتي — مساحتك الخاصة للأفكار",
+  "short_name": "ملاحظاتي",
+  "description": "تطبيق ملاحظات عربي أنيق، يعمل دون إنترنت، بقاعدة بيانات محلية مشفّرة ومساحة مستقلة لكل مستخدم على هذا المتصفح.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#f5f8f6",
+  "theme_color": "#0b5d4b",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

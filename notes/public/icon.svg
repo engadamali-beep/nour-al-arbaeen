@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ملاحظاتي">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#128a6f"/>
+      <stop offset="1" stop-color="#07483b"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e8f5ef"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#03251d" flood-opacity=".38"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="118" fill="url(#bg)"/>
+  <circle cx="120" cy="96" r="150" fill="#ffffff" opacity=".05"/>
+  <circle cx="432" cy="452" r="190" fill="#000000" opacity=".08"/>
+
+  <g filter="url(#shadow)">
+    <path d="M168 112h122l74 74v214a18 18 0 0 1-18 18H168a18 18 0 0 1-18-18V130a18 18 0 0 1 18-18z" fill="url(#paper)"/>
+    <path d="M290 112v56a18 18 0 0 0 18 18h56z" fill="#bfe6d7"/>
+    <path d="M290 112v56a18 18 0 0 0 18 18h56" fill="none" stroke="#0b5d4b" stroke-width="10" stroke-linejoin="round" opacity=".55"/>
+  </g>
+
+  <g stroke="#0b5d4b" stroke-width="17" stroke-linecap="round">
+    <path d="M206 244h150"/>
+    <path d="M206 300h150"/>
+    <path d="M206 356h96"/>
+  </g>
+
+  <g fill="#ffffff">
+    <path d="M376 66l11.5 29.5L417 107l-29.5 11.5L376 148l-11.5-29.5L335 107l29.5-11.5z"/>
+    <path d="M408 168l6.5 16.5L431 191l-16.5 6.5L408 214l-6.5-16.5L385 191l16.5-6.5z" opacity=".75"/>
+  </g>
+</svg>
